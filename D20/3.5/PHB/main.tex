@@ -1,0 +1,115 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[DIV=14, paper=a4, fontsize=10pt, twocolumn, twoside]{scrartcl}
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage[svgnames]{xcolor} % Enabling colors by their 'svgnames'
+\usepackage[cm-default]{fontspec}
+\usepackage{sectsty} % Enables custom section titles
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{atbegshi}
+\usepackage{changepage}
+\usepackage{eso-pic}
+\usepackage{graphicx}
+\graphicspath{{images/}{../images/}}
+\usepackage{subfiles}
+
+\newcommand{\HorRule}{\color{dndblue} \rule{\linewidth}{1pt}} % Defines the gold horizontal rule around the title
+
+\makeatletter
+\let\origsection\section
+\renewcommand\section{\@ifstar{\starsection}{\nostarsection}}
+
+\newcommand\nostarsection[1]
+{\origsection{#1}\vspace{-0.5em}}
+
+\newcommand\starsection[1]
+{\vspace{-0.5cm}\origsection*{#1}\vspace{-0.3cm}}
+\makeatother
+
+% Invisible sections in order to have shorter vertical titles.
+\newcommand\invisiblesection[1]{%
+  \refstepcounter{section}%
+  %\addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}%
+  \sectionmark{#1}
+}
+
+% Invisible sections in order to have shorter vertical titles.
+\newcommand\listsection[2]{%
+    \invisiblesection{#2}
+    \section*{\color{dndblue} #1}
+}
+
+\newcommand\dndheading[1]{%
+    \renewcommand*{\raggedsection}{\raggedleft}
+    \section*{\color{dndblue} \huge #1}
+    \renewcommand*{\raggedsection}{\raggedright}
+    \vspace{-0.4cm}
+    \HorRule
+    \color{black}
+}
+
+% Remove section number from vertical titles.
+\renewcommand\thesection{}
+
+% Add page number, background images and vertical titles to pages.
+\AddToShipoutPictureBG{%
+  \checkoddpage
+  \ifoddpage
+    \put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{left.png}}
+    \put(514,41){\makebox[30mm][c]{\huge \color{white} \thepage}}
+    \put(573,705){\rotatebox{-90}{\makebox[30mm][c]{\LARGE \leftmark}}}
+  \else
+    \put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{right.png}}
+    \put(0,40){\makebox[30mm][c]{\huge \color{white} \thepage}}
+    \put(13,602){\rotatebox{90}{\makebox[30mm][c]{\LARGE \leftmark}}}
+  \fi
+}
+
+\pagestyle{fancy}
+\setmainfont{Celestia Antiqua Std}
+\setsansfont{Pterra}
+\setlist{noitemsep}                         % Remove space between list items.
+\setlist[description]{font=\fontseries{ub}} % Make description list title item bolder.
+\setlength{\columnsep}{1cm}                 % Add space between columns.
+\setlength{\textheight}{25cm}               % Make text fit tighter in page.
+\definecolor{dndblue}{HTML}{003365}         % Colorpicked from PHB 3.5e.
+
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+
+%----------------------------------------------------------------------------------------
+%    TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\usepackage{titling} % Allows custom title configuration
+
+\pretitle{\vspace{-60pt} \begin{flushleft} \HorRule \fontsize{50}{50}  
+\color{dndblue} \selectfont} % Horizontal rule before the title
+
+    \title{WIZARD SPELLS} % Your article title
+\posttitle{\par\end{flushleft}\HorRule} % Whitespace under the title
+
+\date{} % Add a date here if you would like one to appear underneath the title block
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%\maketitle
+%\thispagestyle{empty}
+
+\dndheading{Introduction}
+
+\subfile{sections/Introduction}
+
+\end{document}
