@@ -1,0 +1,165 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[DIV=14, paper=a4, fontsize=10pt, twocolumn, twoside]{scrartcl}
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage[svgnames,table,xcdraw]{xcolor} % Enabling colors by their 'svgnames'
+%\colorlet{dndblue}{MidnightBlue}
+\definecolor{dndblue}{HTML}{003365}         % Colorpicked from PHB 3.5e.
+\usepackage{fontspec}
+\usepackage{sectsty} % Enables custom section titles
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{atbegshi}
+\usepackage{changepage}
+\usepackage{eso-pic}
+\usepackage{graphicx}
+\graphicspath{{images/}{../images/}}
+\usepackage{subfiles}
+\usepackage[normalem]{ulem}
+
+\useunder{\uline}{\ul}{}
+
+\newcommand{\HorRule}{\color{dndblue} \rule{\linewidth}{1pt}} % Defines the gold horizontal rule around the title
+
+\makeatletter
+\let\origsection\section
+\renewcommand\section{\@ifstar{\starsection}{\nostarsection}}
+
+\newcommand\nostarsection[1]
+{\origsection{#1}\vspace{-0.5em}}
+
+\newcommand\starsection[1]
+{\vspace{-0.5cm}\origsection*{#1}\vspace{-0.3cm}}
+\makeatother
+
+% Invisible sections in order to have shorter vertical titles.
+\newcommand\invisiblesection[1]{%
+  \refstepcounter{section}%
+  %\addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}%
+  \sectionmark{#1}
+}
+
+% Invisible sections in order to have shorter vertical titles.
+\newcommand\listsection[2]{%
+    \invisiblesection{#2}
+    \section*{\color{dndblue} #1}
+}
+
+\newcommand\dndheading[1]{%
+    \renewcommand*{\raggedsection}{\raggedleft}
+    \section*{\color{dndblue} \LARGE #1}
+    \renewcommand*{\raggedsection}{\raggedright}
+    \vspace{-0.4cm}
+    \HorRule
+    \color{black}
+}
+
+\newcommand\dndmonster[1]{%
+    \renewcommand*{\raggedsection}{\raggedleft}
+    \section*{\color{dndblue} \LARGE #1}
+    \renewcommand*{\raggedsection}{\raggedright}
+    \HorRule
+    \color{black}
+}
+
+\newcommand\dndchapter[1]{%
+    \renewcommand*{\raggedsection}{\raggedright}
+    \section*{\color{dndblue} \Huge #1}
+    \color{black}
+}
+
+\newcommand\dndsection[1]{%
+    \renewcommand*{\raggedsection}{\raggedright}
+    \subsection*{\color{dndblue} \Large #1}
+    \vspace{-0.3cm}
+    \color{black}
+}
+
+\newcommand\dndsubsection[1]{%
+    \renewcommand*{\raggedsection}{\raggedright}
+    \subsubsection*{\color{dndblue} \large #1}
+    \vspace{-0.3cm}
+    \color{black}
+} 
+
+% Remove section number from vertical titles.
+\renewcommand\thesection{}
+
+% Add page number, background images and vertical titles to pages.
+\AddToShipoutPictureBG{%
+  \checkoddpage
+  \ifoddpage
+    \put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{left.png}}
+    \put(514,41){\makebox[30mm][c]{\huge \color{white} \thepage}}
+    \put(573,705){\rotatebox{-90}{\makebox[30mm][c]{\LARGE \leftmark}}}
+  \else
+    \put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{right.png}}
+    \put(0,40){\makebox[30mm][c]{\huge \color{white} \thepage}}
+    \put(13,602){\rotatebox{90}{\makebox[30mm][c]{\LARGE \leftmark}}}
+  \fi
+}
+
+\pagestyle{fancy}
+\setmainfont{Celestia Antiqua Std}
+\setsansfont{Pterra}
+\setlist{noitemsep}                         % Remove space between list items.
+\setlist[description]{font=\fontseries{ub}} % Make description list title item bolder.
+\setlength{\columnsep}{1cm}                 % Add space between columns.
+\setlength{\textheight}{25cm}               % Make text fit tighter in page.
+% \definecolor{dndblue}{HTML}{003365}         % Colorpicked from PHB 3.5e.
+
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+
+%----------------------------------------------------------------------------------------
+%    TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\usepackage{titling} % Allows custom title configuration
+
+\pretitle{\vspace{-60pt} \begin{flushleft} \HorRule \fontsize{50}{50}  
+\color{dndblue} \selectfont} % Horizontal rule before the title
+
+    \title{Monster Manual I} % Your article title
+\posttitle{\par\end{flushleft}\HorRule} % Whitespace under the title
+
+\date{} % Add a date here if you would like one to appear underneath the title block
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%\maketitle
+%\thispagestyle{empty}
+
+\dndchapter{INTRODUCTION}
+\listsection{}{\normalsize{Introduction}}
+
+\subfile{sections/Introduction}
+
+\dndheading{READING THE ENTRIES}
+
+\subfile{sections/Reading}
+
+\dndchapter{CHAPTER 1: MONSTERS A TO Z}
+\noindent{This book contains hundreds of creatures for use in any \textsc{Dungeons \&\ Dragons} game. Refer to the Glossary, starting at page 305, for definitions of common features and abilities of individual monsters. In most cases, a monster entry describes a typical individual of the kind in question, which is the most common version encountered by characters on adventures. The DM can modify these entries, create advanced or weaker versions, or alter any statistics to play a monster against type and surprise the player characters.}\\
+\indent{And now, let's meet the monsters....}
+\listsection{}{ABOLETH}
+\dndheading{ABOLETH}
+\subfile{sections/aboleth}
+
+\dndheading{ACHAIERAI}
+\subfile{sections/achaierai}
+\noindent{\textit{A large creature stands on four stiltlike legs. It has a birdlike body, round and plump, about the size of a small pony, balanced atop it's legs. Feathers that range in color from brown to red cover its body, and its terrible claws and beak glint like burnished metal.}}
+\listsection{}{ACHAIERAI}
+
+\end{document}
