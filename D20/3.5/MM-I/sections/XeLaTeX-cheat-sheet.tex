@@ -1,0 +1,542 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+% File: cheatsheet.tex -- cheatsheet for various XeTeX typesetting features
+% Author: Tim van Werkhoven (t.i.m.vanwerkhoven@gmail.com, 2011)
+% URL: https://gist.github.com/1119851
+%
+% I keep this file as a scrap book of various tricks in LaTeX/XeTeX that I
+% picked up from various places. I try to refer to places where I found the
+% TeX code when possible, and refer to documentation as much as possible as
+% well. Feel free to use this cheatsheet for your own purposes.
+%
+% This work is licensed under the Creative Commons Attribution-NonCommercial-
+% ShareAlike 3.0 Unported License. To view a copy of this license, visit 
+% http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to 
+% Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 
+% 94041, USA.
+
+%\documentclass{article}
+\documentclass[draft=false]{book}
+
+%%% Load packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% For clickable URLS/references/etc. within the PDF document
+% xetex for the xelatex driver
+% color/break for formatting
+% hyper index for indices with hyperlinks (?)
+% pdfpagelabels/backref for bibliography
+% hyperfootnotes=false for footmisc
+\usepackage[xetex, colorlinks, breaklinks, hyperindex, pdfpagelabels, hyperfootnotes=false]{hyperref}
+%\usepackage[xetex, colorlinks, breaklinks]{hyperref}
+% Some improvements for xetex and latex. Loads fixltx2e, metalogo, xunicode, fontspec.
+% http://mirror.math.ku.edu/tex-archive/macros/latex/contrib/fontspec/fontspec.pdf
+\usepackage[no-math]{fontspec}
+\usepackage{xunicode}
+%\usepackage{xltxtra}
+% Load colors with names
+%\usepackage[usenames]{color}
+%\usepackage{xecolour}
+% For color usage
+\usepackage[xetex,table,hyperref,x11names,svgnames]{xcolor}
+%\definecolor{lgray}{rgb}{0.95,0.95,0.95}
+%\definecolor{white}{rgb}{1,1,1}
+% For headers 
+\usepackage{fancyhdr}
+% Setup page size specifically
+%\usepackage[twoside,paperheight=240mm,paperwidth=170mm,centering,height=186mm,width=120mm,outermargin=45mm]{geometry}
+%\usepackage[xetex,twoside,paperheight=240mm,paperwidth=170mm,centering]{geometry}
+\usepackage[xetex,twoside]{geometry}
+% for source code stuff
+\usepackage{listings}
+% shows various LaTeX layout settings http://ftp.snt.utwente.nl/pub/software/tex/macros/latex/contrib/layouts/
+\usepackage{layouts}
+\usepackage{layout}
+% supersedes babel, http://www.ctan.org/tex-archive/macros/xetex/latex/polyglossia
+\usepackage{polyglossia} 
+% tiny package useful for spaces after commands
+\usepackage{xspace}
+% change font style of section headers http://www.ctan.org/tex-archive/macros/latex/contrib/sectsty/
+\usepackage{sectsty}
+% fancy verbatim http://ctan.org/tex-archive/macros/latex/contrib/fancyvrb
+\usepackage{fancyvrb}
+% footnotes stuff http://www.ctan.org/tex-archive/macros/latex/contrib/footmisc
+%\usepackage[side]{footmisc}
+\usepackage{footmisc}
+% Verbose referencing
+\usepackage{varioref}
+% Fix link target location
+\usepackage[all]{hypcap}
+% Subfigures
+\usepackage{subfig}
+% Graphics
+\usepackage[xetex]{graphicx}
+\usepackage{adjustbox}
+\usepackage{wrapfig}
+
+% For isotopes
+%\usepackage{isotopes}
+% SI Units
+%\usepackage[decimalsymbol=period,mode=text]{siunitx}
+\usepackage[decimalsymbol=period,mode=text,separate-uncertainty = true,multi-part-units = single]{siunitx}
+
+%\usepackage[allowzeroexp=true,numdigits,obeymode=true,redefsymbols,textcelsius,textdegree,textminute,textmu,load={abbr,addn},decimalsymbol=period]{siunitx}
+
+
+%%% Hyperref setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hypersetup{
+pdfauthor = {Tim van Werkhoven},
+pdftitle = {Title goes here},
+pdfsubject = {Subject goes here},
+pdfkeywords = {Keywords, go, here},
+pdfcreator = {XeLaTeX with hyperref package},
+pdfproducer = {pdfLaTeX},
+colorlinks = false,
+linkcolor = red,          % color of internal links
+citecolor = green,        % color of links to bibliography
+filecolor = magenta,      % color of file links
+urlcolor = blue,          % color of external links
+}
+
+%%% Set Font options %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\defaultfontfeatures{Mapping=tex-text, Fractions=Diagonal}
+
+% Choose default fonts
+\setmainfont[Numbers={OldStyle}]{Garamond Premier Pro}
+\setsansfont[Scale=MatchLowercase]{Helvetica Neue}
+\setmonofont[Scale=0.8]{Monaco}
+
+% Math fonts aren't easy. Fontspec can only do so much (see http://www.ctan.org/tex-archive/macros/xetex/latex/fontspec). Another option is loading specific packages for math fonts, (see ftp://tug.ctan.org/pub/tex-archive/info/Free_Math_Font_Survey/survey.html and http://www.tug.org/pipermail/xetex/2008-March/009073.html) or sfmath for sans serif fonts (see http://dtrx.de/od/tex/sfmath.html).
+
+% Using fontspec:
+%\setmathrm{Arial}
+%\setmathsf{Arial}
+%\setmathtt{Arial}
+%\setboldmathrm[BoldFont={Optima ExtraBlack}]{Optima Bold}
+% With sfmath:
+% \usepackage[cm]{sfmath}
+% With specific packages
+%\usepackage[garamond]{mathdesign}
+\usepackage{eulervm}
+%\usepackage[math]{kurier}
+%\usepackage{cmbright}
+
+% A somewhat satisfactory solution seems to be using unicode-math in combination with math-compatible open type fonts such as the STIX fonts (see http://www.charlietanksley.net/philtex/the-unicode-math-package-for-xelatex-and-the-stix-fonts/ and http://tex.stackexchange.com/questions/720/is-it-already-possible-to-use-the-stix-fonts and http://typophile.com/node/71171)
+
+%\usepackage{unicode-math}
+%\setmainfont{XITS}
+%\setmathfont{XITS Math}
+%\usepackage[math-style=ISO]{unicode-math}
+% Problem: \setmathfont{} gives a bug when used in combination with amsmath...
+%\setmathfont{STIXGeneral}
+%\setmathfont[range=\mathit/{latin,Latin}]{Adobe Garamond Pro}
+%\setmathfont[range=\mathit/{greek,Greek}]{Linux Libertine O}
+%\usepackage{amsmath}
+
+%\setmathfont{Asana-Math.otf}
+%\setmathfont[range=\mathit/{greek,Greek,latin,Latin}]{Adobe Garamond Pro}
+
+% This is how you can define custom temporary font styles
+\newcommand{\fontold}[1]{\fontspec[Alternate=1,Ligatures={Common, Rare}, Swashes={LineInitial, LineFinal}]{Hoefler Text}\fontsize{24pt}{30pt}\selectfont #1}%
+\newcommand{\smallprint}[1]{\fontspec{Adobe Garamond Pro}\fontsize{10pt}{13pt}\color{Gray}\selectfont #1}%
+
+\newfontfamily\marginfontt[Color=Red]{Fontin}
+\newcommand{\marginfont}{\marginfontt\fontsize{8pt}{8pt}\selectfont}
+
+
+% Set default languages
+\setdefaultlanguage{british}
+\setotherlanguage{dutch}
+\setotherlanguage{latin}
+
+%%% Page layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\sloppy								% don't care too much about a lot of 
+									% space in sentences
+\setlength{\parindent}{0ex}
+\setlength{\parskip}{2ex plus 0.5ex minus 0.5ex}
+
+%% Penalize widow and orphan lines
+\widowpenalty=300
+\clubpenalty=300
+
+\geometry{includeheadfoot,includemp,papersize={170mm,240mm},total={124mm,185mm}, outermargin=5mm, innermargin=10mm}
+%\geometry{paper=a4paper, layout=a4paper}
+%\setlength{\hoffset}{}
+%\addtolength{\hoffset}{0.5in}
+%\addtolength{\textwidth}{-1in}
+%\setlength{\marginparwidth}{200pt}
+%\setlength{\marginparwidth}{3cm}
+
+% We use this number to scale the images made in Illustrator
+\newcommand{\imgscale}{0.7}
+% We use this number to scale the images made with gnuplot
+\newcommand{\plotscale}{1}
+
+% Some path-shortcuts
+\newcommand{\imgpath}{../img/}
+\newcommand{\plotpath}{../plots/}
+
+%%% Section and Chapter layout  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newfontface\chaptertitfont{Frutiger LT Std 75 Black}
+\newfontface\chapterfont{Frutiger LT Std 46 Light Italic}
+
+\renewcommand{\@makechapterhead}[1]{%
+  \vspace*{100\p@}%
+  {\parindent \z@ \raggedright \chapterfont \fontsize{100}{140} \selectfont
+    \ifnum \c@secnumdepth >\m@ne
+      \if@mainmatter
+        \huge\bfseries \@chapapp\space \thechapter
+        \par\nobreak
+        \vskip 20\p@
+      \fi
+    \fi
+    \interlinepenalty\@M
+    \Huge \bfseries \chaptertitfont #1\par\nobreak
+    \hrule
+    \vskip 40\p@
+  }}
+
+
+%%% Custom commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Some command abbreviations
+\newcommand{\tsup}[1]{\textsuperscript{#1}}
+\newcommand{\tsub}[1]{\textsubscript{#1}}
+
+\newcommand{\squash}[1]{\makebox[0pt]{#1}}
+\newcommand{\rn}{\ensuremath{r}\tsub{0}\xspace}
+\newcommand{\FOAM}{FOAM\xspace}
+\renewcommand{\vec}[1]{\ensuremath{\boldsymbol{#1}}}%
+\newcommand{\mat}[1]{\ensuremath{\mathbf{#1}}}%
+
+%%% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\thispagestyle{empty}
+\tableofcontents
+
+\sectionfont{\sectionrule{3ex}{3pt}{-1ex}{1pt}}
+
+\chapter{XeTeX \LaTeX\ cheatsheet}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Legacy syntax}
+These are both em-dashes, one set in the \LaTeX\ shortcut triple-dash, the other using the proper Unicode character. The same things holds for the quotes.
+
+When he goes---``Hello World!''\marginpar{en-dash: –, em-dash: ---}\\*
+She replies—“Hello dear!”\footnote{This footnote can go to the side with \texttt{footmisc} if we want. They can be very long and will span multiple lines if necessary.}
+
+Other `lines' include the hyphen: -, minus: $-$, en-dash: --, em-dash: ---, underscore: \_ and pipe: |.
+
+No fraction 1/2, fraction: 1⁄2 \marginpar{fraction slash:\ ⁄}
+{\sffamily No fraction 1/2, fraction: 1⁄2} \marginpar{\textbackslash sffamily}
+
+Here we go with text superscript\marginpar{textsuperscript} 1\tsup{st} 2\tsup{nd} \squash{\tsub{6}}\tsup{12}C $\int^{1}_{2}$\footnote{See also:\\ \url{http://tex.stackexchange.com/questions/24043/sub-and-superscripting-together-in-text-mode}.}.
+% \isotope[228][88]{Ra}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Font styles \& ligatures}
+
+{
+% Set hyphenation to Latin for this part (using polyglossia)
+\begin{latin}
+\fontspec[Ligatures={Common, Rare},Fractions=Diagonal, Alternate=0]{Hoefler Text Italic}
+\fontsize{18pt}{18pt}\selectfont Q\marginpar{Hoefler Text Italic 12/18pt}
+\fontsize{12pt}{18pt}\selectfont {\scshape uesto è strano assai!} Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+\end{latin}
+}
+
+Proc.\ Amer.\ Math.\ Soc.\marginpar{Prevent EOL spaces}\\
+\marginpar{Default spacing}Proc. Amer. Math. Soc.
+
+\marginpar{Typesetting units with \texttt{siunitsx}}\SI{6.54e-6}{\kilogram\per\hertz\cubed}\\
+\SI{5.43e2}{\joule\per\newton\cubed\per\henry\tothe{5}} \\
+\ang{1;2;3} \ang{12.3} \ang{;-0;1} \num{1.2e32} \\
+\SIlist{0.13;0.67;0.80}{\milli\metre}\\
+\SIrange{0.13}{0.67}{\milli\metre}\\
+\SI[mode=text]{1.23+-0.09}{J.mol^{-1}.K^{-1}}\\
+\SI[mode=text,separate-uncertainty = true]{1.23+-0.5}{J.mol^{-1}.K^{-1}}\\
+\SI[multi-part-units = single]{12.3(4)}{\kilo\gram}
+
+Here is a list of numbers with units: \SIlist{0; 10; 20; 30; 40; 50; 75}{\micro\meter}.
+
+Here we match the sans-serif fontsize to the roman font size:\\*
+{\sffamily Sed massa libero}\marginpar{sffamily}%
+, sagittis at vulputate et, suscipit ut sem. 
+
+
+Small caps and uppercase small caps respectively for TeX Gyre Adventor:\\
+{
+\fontspec[Letters=SmallCaps]{TeX Gyre Adventor} THIS SENTENCE no verb \hspace{2em}\marginpar{SmallCaps/\\ UppercaseSmallCaps}
+\fontspec[Letters=UppercaseSmallCaps]{TeX Gyre Adventor} THIS SENTENCE no verb\\
+}
+
+Adobe Garamond Pro uppercase with default and forced uppercase letters:\\
+{
+\fontspec{Adobe Garamond Pro} UPPER-case EXAMPLE \hspace{2em}
+\addfontfeature{Letters=Uppercase} UPPER-case EXAMPLE\\
+}
+
+TeX Gyre Bonum  with numbers Lining and SlashedZero features:\\
+{
+\fontspec[Numbers=Lining]{TeX Gyre Bonum} 0123456789\hspace{2em}\marginpar{TeX Gyre Bonum\\Lining, SlashedZero}
+\fontspec[Numbers=SlashedZero]{TeX Gyre Bonum} 0123456789 \\
+}
+
+{
+\fontspec{Hoefler Text}\selectfont Without Contextual Swashes	\hspace{2em}\marginpar{Contextuals=Swash}
+\fontspec[Contextuals=Swash]{Hoefler Text}\selectfont With Contextual Swashes; cf. WCS\\
+}
+
+Small print for Adobe Garamond Pro (8pt 2pt leading):\\
+{
+\fontspec{Adobe Garamond Pro}\fontsize{8pt}{10pt}\selectfont This is small print
+}
+
+Alternate characters for Garamond Premier Pro:\\
+{
+\fontspec[Alternate=1]{Garamond Premier Pro} Sed massa libero, sagittis at vulputate
+}
+
+Titlingcaps in second example:\\
+{
+\fontspec{Garamond Premier Pro}\selectfont TITLING CAPS \hspace{2em}
+\addfontfeature{Style=TitlingCaps}\selectfont TITLING CAPS\\
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Floats}
+
+Here we use some floats and show how we can use them properly.\marginpar{Floats, subfloat}
+
+\begin{figure}[h!]
+  \centering
+  \subfloat[A gull]{\label{fig:gull}\includegraphics[width=0.3\textwidth]{gull}}                
+  \subfloat[A tiger]{\label{fig:tiger}\includegraphics[width=0.3\textwidth]{tiger}}
+  \subfloat[A mouse]{\label{fig:mouse}\includegraphics[width=0.3\textwidth]{mouse}}
+  \caption{Pictures of animals}
+  \label{fig:animals}
+\end{figure}
+
+We can then refer to the images like this:\marginpar{See \autoref{fig:gull} (autoref)}\autoref{fig:gull} shows a gull, 
+which is a kind of bird that fly around the sea. \marginpar{See \autoref{fig:animals} (autoref)}\autoref{fig:animals} shows 
+a series of animals, two mammals and a bird. This is the same as \fullref{fig:animals} (full ref) and also as \vref{fig:animals} (vref) or even \vpageref[above example][example]{fig:animals} (vpageref). Wikipedia has some extra info on \verb!autoref! \footnote{\url{https://secure.wikimedia.org/wikibooks/en/wiki/LaTeX/Labels\_and\_Cross-referencing\#The\_hyperref\_package\_and\_.5Cautoref.7B.7D}}. \verb!\vref! etc. come from the package \texttt{varioref}\footnote{\url{http://www.ctan.org/pkg/varioref}}.
+
+The following shows how to crop images and vertically align figures using \texttt{subfloat}s and a \texttt{savebox}. N.B. XeTeX does not support trimming/cropping/clipping so we use the \texttt{adjustbox} package.\marginpar{adjustbox, savebox, trim, clip, crop}
+
+\newsavebox{\tempbox}
+\begin{figure}[h!]
+  \centering
+  \sbox{\tempbox}{\adjustbox{trim=5mm 15mm 10mm 10mm, clip, width=0.35 \textwidth}{\includegraphics{mouse}}}%
+  %
+  \subfloat{%
+  	\label{fig:gull2}%
+	\vbox to \ht\tempbox{%
+		\vfill
+		\hbox{\includegraphics[width=0.25 \textwidth]{gull}}%
+		\vfill\vfill}}%
+  \quad%
+%
+  \subfloat{%
+  	\label{fig:tiger2}%
+	\vbox to \ht\tempbox{%
+		\vfill
+		\hbox{\includegraphics[width=0.25 \textwidth]{tiger}}%
+		\vfill\vfill}}%
+  \quad%
+  %
+  \subfloat{\label{fig:mouse2}\usebox{\tempbox}}%
+  \caption{\label{fig:animelas2}Vertical alignment of images.}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Math}
+
+{ 
+\fontspec[Fractions=Diagonal]{Skia}
+
+Note: \marginpar{Fractions=Diagonal, Skia}these are different slashes, the former is a proper fraction slash, the other a regular slash. Note how XeTeX
+interprets the former slash properly to make a fraction\let\thefootnote\relax\footnote{There is no number in this footnote}:
+
+Fraction \& 12345⁄212345 \& 12345/1234
+}
+
+%%% Equation %%%%%%%%%%%%%%%%%%%%%%%%
+\marginpar{Math mode}
+\begin{equation}
+	\label{eqn:residualrmsptt}
+	\sigma_{\varphi, 3}^2 = 0.134 \left ( \frac{d}{\rn} \right )^{5/3}.
+\end{equation}
+%%% Equation %%%%%%%%%%%%%%%%%%%%%%%%
+
+As you can see in Eqn.~\ref{eqn:residualrmsptt} (ref) or in Eqn.~\vref{eqn:residualrmsptt} (vref). Even \autoref{eqn:residualrmsptt} shows this (autoref)
+
+%%% Equation %%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+	\label{eqn:residualrmsptt2}
+	\sigma_{\varphi, 3}^2 = \sin 0.335 \exp \left ( \frac{D}{\rn} \right )^{5/3} \int N^{-5/6},
+\end{equation}
+%%% Equation %%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Equation %%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{align}
+%& ⊢ ∀x[(Fx ∨ Gx) → \mathord{∼}Hx] \\
+%& ⊨ ¬∃y∀x[x∈y ↔ x∉x]  \\
+%& ⊭ x ∩ (y ∪ z) ≠ (x ∩ y) ∪ (x ∩ z) \\
+%& ⊢ ⟦α⟧ = ℵ₀ → α ≇ ℘(α) \\
+%& ⌜ψ[(℩x)φx]⌝ ≝
+%     ⌜(∃x)[φx ∧ (∀z)(φz ⊃ x=z) ∧ ψx]⌝ \\
+%& ⊢ (P ⥽ Q) ⥽ (□P ⥽ ◇Q)
+%\end{align}
+%%% Equation %%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Numerals}
+\marginpar{lowercase, oldstyle, linig}Two types of numerals, `lowercase' or oldstyle fit better with lowercase text, the other (`lining') look more like capitals.
+
+\fontspec[Numbers={OldStyle}]{Hoefler Text}Old style: 1234567\\
+\fontspec[Numbers={Lining}]{Hoefler Text}Lining: 1234567
+
+\section{Tables}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[ht]
+	\rowcolors{2}{black!7}{white}
+	\renewcommand{\arraystretch}{1.2}
+\begin{center}
+	\begin{tabular}{llllll}
+		& Mo & Tue & Wed & Thu & Fri \\
+		\hline
+%		\rowcolor{lgray}
+		9-11 & & & & x & \\
+%		\rowcolor{white}
+		11-13 & & & & x & \\
+%		\rowcolor{lgray}
+		13-15 & & x & & & \\
+%		\rowcolor{white}
+		15-17 & x & x & & & \\
+		\end{tabular}
+	\end{center}
+	\label{tab:sched}
+	\caption{Table with colored rows (using \texttt{xcolor} with \texttt{colortbl})}
+\end{table}
+
+\section{Some running text}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eleifend, elit lobortis sagittis elementum, metus turpis elementum dui, eu scelerisque est tellus non libero. Nam eu nisi sapien. Nam vel lacus et eros cursus vulputate. Sed non dui turpis. Duis id pellentesque nisl. Curabitur dapibus felis vitae nunc tristique vehicula. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec eget lectus ut purus pharetra pharetra. Fusce ac nisl et lorem lobortis cursus ac nec turpis. In risus tortor, ultricies et dapibus in, vehicula ut nisi. Donec dignissim odio vitae enim vehicula pulvinar.
+
+In ac sem eu diam aliquet malesuada eu ac orci. Sed et mattis lectus. Quisque euismod mauris in sapien hendrerit ultrices. Vivamus feugiat pharetra arcu, ut facilisis ante laoreet vitae. Etiam ut dui sit amet massa malesuada varius at ullamcorper ipsum. Nullam aliquet, mauris sit amet consequat elementum, purus velit aliquet erat, eu fringilla magna velit in purus. In hac habitasse platea dictumst. In enim ipsum, laoreet ac cursus eget, ullamcorper quis diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut convallis tortor non velit ornare feugiat sit amet rhoncus justo. Morbi hendrerit ipsum eget elit lobortis tincidunt. Nullam congue ipsum a ligula suscipit at luctus nibh sagittis. 
+
+Donec vehicula fermentum velit eget ultrices. Quisque euismod rhoncus odio eu pulvinar. Vivamus volutpat sollicitudin lectus in vestibulum. Aliquam erat volutpat. Maecenas a odio sem, ac suscipit massa. Nulla vel turpis sed enim sodales vestibulum. Curabitur pretium ullamcorper tincidunt. Fusce euismod commodo orci et congue. Nullam fermentum purus id urna commodo sed congue diam aliquam. Nulla id nibh nisl, eu mollis lectus. Aliquam ut diam tempus libero lacinia vestibulum posuere non mauris. Morbi in nisl libero. Ut eu metus non justo pellentesque dignissim ut et mauris. Duis id aliquam nisl. Mauris suscipit tortor eu dolor dictum suscipit.
+
+Fusce ipsum quam, sagittis sit amet sodales ac, ultrices quis risus. Etiam dignissim ipsum vel elit convallis sit amet convallis magna dignissim. Aliquam mattis hendrerit tortor hendrerit consequat. Cras dui eros, vestibulum sed consectetur ac, molestie quis leo. Vivamus vestibulum erat ac sapien porta rhoncus eleifend nisl elementum. Aliquam eu mauris nec dolor semper sagittis. Etiam faucibus neque at dolor euismod non vulputate ligula dictum. Sed vel faucibus mi. Mauris tempor tincidunt tincidunt. Integer eu nulla eros. Pellentesque nibh orci, pulvinar in placerat eget, fermentum vitae augue.
+
+Proin feugiat, magna quis congue viverra, felis diam bibendum mauris, at pretium felis neque vel leo. Vivamus interdum erat sit amet lorem hendrerit nec venenatis massa tincidunt. Ut volutpat rutrum commodo. Aenean ac nunc orci. Fusce vel cursus eros. Etiam fringilla felis vitae metus dictum at hendrerit tortor pulvinar. Nulla non mauris eu ante fermentum commodo ut nec enim. Duis vitae nisi eget enim lobortis tristique. 
+
+Sed sodales tristique nisl, id rutrum nunc facilisis sed. Donec lorem tellus, tincidunt eget placerat sit amet, sollicitudin nec metus. Sed pulvinar aliquam ultrices. Fusce auctor justo ut sapien lobortis ac tristique neque semper. Fusce posuere dolor malesuada turpis dignissim accumsan. Maecenas lorem est, mollis quis ullamcorper eget, laoreet placerat tortor. Vestibulum odio nibh, volutpat id ultrices et, ullamcorper eget ligula. Mauris eu orci nunc, id hendrerit quam. Phasellus purus mi, euismod at sollicitudin a, varius at enim. Suspendisse vel eros vel ipsum ultrices porttitor. Nunc adipiscing, nisl sit amet semper posuere, felis tortor euismod arcu, ut blandit lectus nisl quis tortor. Aliquam ipsum mi, pretium et porta in, mollis in nunc. Praesent elit leo, iaculis in pellentesque nec, lobortis eget enim. Vestibulum sed convallis arcu.
+
+Suspendisse sit amet magna nec leo facilisis ultricies. Maecenas pulvinar, justo et convallis viverra, nunc lacus elementum purus, eget tristique velit dolor vitae libero. Praesent vel molestie augue. Donec venenatis tortor odio, nec feugiat velit. Nullam sem magna, semper ac gravida porta, aliquam sit amet ante. Cras mi lectus, ornare nec blandit sit amet, malesuada vitae lacus. In scelerisque venenatis nibh, gravida tristique dui tristique a. Fusce urna tortor, laoreet ac gravida eu, hendrerit in velit.
+
+Donec feugiat laoreet congue. Proin sollicitudin mauris nec nulla posuere eget placerat mauris dictum. Ut tellus nulla, aliquet laoreet fringilla sit amet, dapibus vehicula purus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus fringilla porttitor velit, ac aliquet dui pulvinar ac. Maecenas leo dui, imperdiet vel porta nec, tincidunt consectetur erat. Mauris suscipit orci vel est suscipit at consequat sapien posuere. Maecenas eget nisl eget libero sagittis egestas. Pellentesque quis metus eu nulla auctor tristique.
+
+Aliquam et quam nunc. Quisque quis porta mi. Phasellus rhoncus vulputate velit et vestibulum. Morbi sagittis, turpis eu tincidunt vehicula, urna magna euismod dui, quis vehicula enim justo sed leo. Aenean malesuada, nulla eget suscipit sagittis, erat dolor volutpat velit, sed aliquet sapien mauris sed dui. Cras aliquam adipiscing odio, et blandit risus cursus ac. Vestibulum a arcu sit amet metus ornare congue sed sed diam. Aliquam erat volutpat. Curabitur ut turpis nisl. Fusce sed odio lacus. 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada quam a nulla vestibulum aliquet dapibus eros accumsan. Mauris faucibus ipsum vel augue lobortis in bibendum leo eleifend. Quisque in facilisis dolor. Cras tellus ligula, aliquet vel adipiscing id, pretium sit amet neque. Vestibulum varius metus quis odio congue ullamcorper. Vestibulum sit amet mauris ut elit pellentesque tempor. Nulla tempus auctor urna, non sodales enim scelerisque sit amet. Nullam urna elit, commodo quis vulputate ac, volutpat a sem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum eleifend facilisis molestie. Mauris gravida, metus sit amet cursus blandit, dolor sem gravida ipsum, sit amet condimentum orci urna et turpis. Curabitur libero elit, sodales eget varius sit amet, fringilla sed libero. Sed vel augue risus, a egestas lacus. Donec sagittis justo non nunc consectetur fringilla. Quisque turpis ligula, dapibus eu vulputate in, iaculis porttitor ipsum. Nulla ac nisi elit, ac convallis augue.
+
+Phasellus pretium accumsan lacus quis aliquet. Morbi vulputate venenatis molestie. Sed porttitor facilisis malesuada. Cras fermentum accumsan facilisis. Etiam lacus mi, faucibus sit amet commodo eget, varius at orci. In hac habitasse platea dictumst. Morbi id est justo. Donec eleifend sollicitudin orci, ultrices tincidunt orci semper et. In tristique tempus mi, in sollicitudin ipsum pretium quis. Vivamus urna elit, blandit sit amet ultricies quis, interdum eget neque. Sed facilisis arcu eget dui luctus tincidunt. Donec vitae laoreet magna. Cras ut massa orci.
+
+Fusce lorem arcu, pellentesque in consequat id, pellentesque eu leo. Mauris eget auctor sem. Sed quis mauris tortor. Nullam faucibus quam non magna tempus ullamcorper auctor justo auctor. Aenean ornare, magna non consequat gravida, ante urna ullamcorper risus, eget condimentum nisi eros ac metus. In sed arcu id orci fringilla consequat. Suspendisse ultricies elit nunc, ut consequat sapien. Duis ipsum mi, tristique sed dictum placerat, dapibus ultrices diam.
+
+Cras vitae purus leo. Phasellus posuere consectetur ante volutpat sodales. Aliquam sagittis dolor vitae dui elementum aliquam. Curabitur adipiscing condimentum condimentum. Maecenas rhoncus nisl at sem sodales non dictum orci congue. Etiam eu neque magna, rutrum dictum urna. Vivamus id diam id diam sagittis mollis. Nulla vel eros a mi vehicula fringilla. Nam sed libero tortor, a aliquam ligula. Proin blandit mattis tristique. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras malesuada eros eget ligula ullamcorper aliquet. Nunc augue quam, tristique nec luctus et, volutpat at orci. Nulla vestibulum nisi nec enim sollicitudin ac gravida magna semper. Quisque et dictum sapien. Sed sed arcu nec diam fermentum scelerisque.
+
+Nunc suscipit congue pellentesque. Nullam vitae enim in purus hendrerit sagittis placerat id quam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus condimentum nunc vitae augue ullamcorper aliquam. Suspendisse cursus ante ut augue pulvinar sit amet egestas tellus viverra. Phasellus nibh ipsum, interdum sit amet porttitor vitae, mattis in dolor. Mauris imperdiet malesuada elementum. Nulla convallis nibh eget lorem interdum eu interdum elit luctus. Donec at feugiat purus. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Verbatim, source code}
+
+\subsection{Regular verbatim}
+
+\begin{verbatim}
+% see http://www.ctan.org/tex-archive/macros/xetex/latex/xltxtra/xltxtra.pdf
+%\usepackage{xltxtra} 
+\usepackage{xunicode} %handle unicode
+\usepackage{xltxtra} %XeTeX extras
+\usepackage[math]{fontspec} %use OTF/TTF fonts
+
+%\usepackage{fontspec} % loaded by xltxtra
+\setmainfont{Cambria}
+\setmonofont{Monaco}
+\setsansfont{Minion Pro}
+%\usepackage{xunicode} % loaded by xltxtra
+%\usepackage{metalogo} % loaded by xltxtra
+%\usepackage{fixltx2e} % loaded by xltxtra
+\end{verbatim}
+
+\subsection{Fancy verbatim}
+
+\begin{Verbatim}[numbers=left, framerule=1pt]
+% see http://www.ctan.org/tex-archive/macros/xetex/latex/xltxtra/xltxtra.pdf
+\usepackage{xltxtra} 
+%\usepackage{fontspec} % loaded by xltxtra
+\setmainfont{Cambria}
+\setmonofont{Monaco}
+\setsansfont{Minion Pro}
+%\usepackage{xunicode} % loaded by xltxtra
+%\usepackage{metalogo} % loaded by xltxtra
+%\usepackage{fixltx2e} % loaded by xltxtr
+\end{Verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+
+\section{Text layouts}
+
+\currentparagraph
+\begin{figure}
+\caption{Paragraphs in this document}
+\paragraphdesign
+\end{figure}
+
+\begin{figure}
+\listdiagram
+\caption{List parameters}
+\end{figure}
+
+\begin{thebibliography}{Dillo 83}
+\bibitem[Knud 66]{kn:gus} D. E. Knudson. \emph{1996 World Gnus Almanac.}
+\currentlist
+\begin{figure}
+\listdesign
+\caption{Bibliography list}
+\end{figure}
+\end{thebibliography}
+
+\section{Page layouts}
+
+\layout
+
+\currentpage
+\begin{figure}
+\oddpagelayoutfalse
+\twocolumnlayoutfalse
+\pagediagram
+\caption{oddpagelayoutfalse, twocolumnlayoutfalse, pagediagram}
+\end{figure}
+
+
+\currentpage
+\begin{figure}
+\oddpagelayouttrue
+\twocolumnlayoutfalse
+\pagediagram
+\caption{\oddpagelayouttrue, twocolumnlayoutfalse, pagediagram}
+\end{figure}
+
+
+
+\end{document}

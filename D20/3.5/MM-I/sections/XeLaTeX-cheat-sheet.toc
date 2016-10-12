@@ -1,0 +1,14 @@
+\contentsline {chapter}{\numberline {1}XeTeX \LaTeX \ cheatsheet}{5}{chapter.1}
+\contentsline {section}{\numberline {1.1}Legacy syntax}{5}{section.1.1}
+\select@language {latin}
+\contentsline {section}{\numberline {1.2}Font styles \& ligatures}{5}{section.1.2}
+\contentsline {section}{\numberline {1.3}Floats}{6}{section.1.3}
+\contentsline {section}{\numberline {1.4}Math}{7}{section.1.4}
+\contentsline {section}{\numberline {1.5}Numerals}{7}{section.1.5}
+\contentsline {section}{\numberline {1.6}Tables}{7}{section.1.6}
+\contentsline {section}{\numberline {1.7}Some running text}{8}{section.1.7}
+\contentsline {section}{\numberline {1.8}Verbatim, source code}{11}{section.1.8}
+\contentsline {subsection}{\numberline {1.8.1}Regular verbatim}{11}{subsection.1.8.1}
+\contentsline {subsection}{\numberline {1.8.2}Fancy verbatim}{11}{subsection.1.8.2}
+\contentsline {section}{\numberline {1.9}Text layouts}{13}{section.1.9}
+\contentsline {section}{\numberline {1.10}Page layouts}{17}{section.1.10}
